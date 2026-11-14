@@ -120,12 +120,21 @@ uv run mdview README.md
 
 ### Releasing
 
-1. Bump `version` in `pyproject.toml` and `src/mdview/__init__.py`.
-2. On pypi.org, add this repository as a *trusted publisher* for `dvm-mdview`
-   (workflow `publish.yml`, environment `pypi`). This is needed once.
-3. Publish a GitHub release. The `Publish to PyPI` workflow builds and uploads it.
+The version comes from the git tag, so the tag and the PyPI version always match.
 
-To publish by hand instead: `uv build` then `uv publish` with a PyPI token.
+1. Once, on pypi.org, add this repository as a *trusted publisher* for `dvm-mdview`
+   (workflow `publish.yml`, environment `pypi`).
+2. Tag a commit on `main` and push the tag:
+
+```bash
+git tag v1.2.3
+```
+
+```bash
+git push origin v1.2.3
+```
+
+The `Release` workflow builds version 1.2.3, creates the GitHub release and uploads to PyPI.
 
 ## License
 

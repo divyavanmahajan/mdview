@@ -1,20 +1,56 @@
-name: Publish to PyPI
+name: Release
 
-# Runs when a GitHub release is published. Uses PyPI "trusted publishing":
-# on pypi.org add this repository and the workflow name "publish.yml" as a
-# trusted publisher for the project dvm-mdview. No API token is stored.
+# Pushing a tag such as v1.2.3 builds version 1.2.3 (the version is derived
+# from the tag), creates the GitHub release and uploads to PyPI.
+#
+# PyPI upload uses "trusted publishing": on pypi.org add this repository,
+# workflow "publish.yml" and environment "pypi" as a trusted publisher for
+# the project dvm-mdview. No API token is stored.
 on:
-  release:
-    types: [published]
+  push:
+    tags: ["v*"]
 
 jobs:
-  publish:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - run: uv build
+      - name: Check that the built version matches the tag
+        run: ls "dist/dvm_mdview-${GITHUB_REF_NAME#v}-py3-none-any.whl" "dist/dvm_mdview-${GITHUB_REF_NAME#v}.tar.gz"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - run: gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  pypi:
+    needs: build
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
       - uses: astral-sh/setup-uv@v6
-      - run: uv build
       - run: uv publish
