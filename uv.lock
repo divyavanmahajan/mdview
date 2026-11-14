@@ -88,7 +88,6 @@ wheels = [
 
 [[package]]
 name = "dvm-mdview"
-version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "linkify-it-py" },

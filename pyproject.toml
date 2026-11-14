@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
 name = "dvm-mdview"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Markdown viewer and live-preview editor with a graphical UI and a terminal UI"
 readme = "README.md"
 license = "MIT"
@@ -41,6 +41,13 @@ mdview = "mdview.cli:main"
 
 [dependency-groups]
 dev = ["pytest>=8", "pytest-asyncio>=0.24"]
+
+# The version comes from the git tag (v1.2.3 -> 1.2.3), so tag and PyPI version cannot differ.
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/mdview/_version.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/mdview"]
