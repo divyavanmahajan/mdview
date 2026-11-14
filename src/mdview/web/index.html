@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="mdview-token" content="{{token}}">
+<title>mdview</title>
+<link rel="stylesheet" href="/static/vendor/katex.min.css">
+<link rel="stylesheet" href="/pygments.css">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header id="toolbar">
+  <div class="group">
+    <button id="btn-back" title="Back (Alt+Left)" aria-label="Back">&#8592;</button>
+    <button id="btn-forward" title="Forward (Alt+Right)" aria-label="Forward">&#8594;</button>
+  </div>
+  <div class="group">
+    <button id="btn-new" title="New document (Ctrl/Cmd+N)">New</button>
+    <button id="btn-open" title="Open file (Ctrl/Cmd+O)">Open</button>
+    <button id="btn-save" title="Save (Ctrl/Cmd+S) &#183; Save as (Ctrl/Cmd+Shift+S)">Save</button>
+  </div>
+  <div id="doc-path" title=""></div>
+  <div class="group segmented" role="group" aria-label="Layout (Ctrl/Cmd+E cycles)">
+    <button data-mode="view" title="Preview only (Ctrl/Cmd+E cycles)">View</button>
+    <button data-mode="split" title="Editor and live preview">Split</button>
+    <button data-mode="edit" title="Editor only">Edit</button>
+  </div>
+  <div class="group">
+    <button id="btn-outline" title="Show or hide the outline">Outline</button>
+    <button id="btn-theme" title="Switch light / dark theme">Theme</button>
+  </div>
+</header>
+<div id="banner" hidden>
+  <span id="banner-text"></span>
+  <button id="banner-action"></button>
+  <button id="banner-dismiss" aria-label="Dismiss">&#215;</button>
+</div>
+<main id="main" data-mode="view">
+  <nav id="outline" hidden aria-label="Outline"></nav>
+  <section id="editor-pane">
+    <textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off"
+      placeholder="Write Markdown here. The preview updates as you type."></textarea>
+  </section>
+  <div id="divider" role="separator" aria-orientation="vertical"></div>
+  <section id="preview-pane" tabindex="-1">
+    <article id="preview" class="markdown-body"></article>
+  </section>
+</main>
+<div id="toast" hidden role="status"></div>
+<div id="modal" hidden>
+  <div id="modal-box" role="dialog" aria-modal="true">
+    <div id="modal-title"></div>
+    <div id="modal-dir" hidden></div>
+    <ul id="modal-list" hidden></ul>
+    <input id="modal-input" type="text" hidden spellcheck="false" autocomplete="off">
+    <div id="modal-buttons"></div>
+  </div>
+</div>
+<script src="/static/vendor/katex.min.js"></script>
+<script src="/static/vendor/mermaid.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
